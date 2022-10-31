@@ -34,11 +34,28 @@ other Vagrant commands: provision, halt, suspend, destroy etc.
 
 ### Margay setup
 
-At this point Margay is not setuo yet.
+At this point Margay is not setup yet.
 
-Please refer to: https://github.com/vemarsas/margay#readme.
+To setup Margay (if not done already):
+```bash
+vagrant ssh <mgy OR mgy_downstr>
+sudo -i
+bash -c "$(wget -O - https://raw.githubusercontent.com/vemarsas/mgy-onboard/main/setup.sh)"
+```
+That's the same installation procedure you would use on real hardware!
 
-It's the same installation procedure you would use on real hardware!
+#### After Margay setup
+
+##### Upstream Margay
+* SSH: port 2222 @localhost, user: "onboard", password: "onboard"
+* Margay web: http://localhost:4567 or https://localhost:4443
+
+##### Downstream margay
+* SSH: port 2223 @localhost, user: "onboard", password: "onboard"
+* Margay web: http://localhost:4568 or https://localhost:4444
+
+See also `COMMON_MESSAGE` (and *`.vm.post_up_message`) in [Vagrantfile](Vagrantfile).
+
 
 ### Synced folder
 
