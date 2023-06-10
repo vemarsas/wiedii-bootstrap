@@ -48,11 +48,11 @@ That's the same installation procedure you would use on real hardware!
 
 ##### Upstream Margay
 * SSH: port 2222 @localhost, user: "onboard", password: "onboard"
-* Margay web: http://localhost:4567 or https://localhost:4443
+* Margay web: http://localhost:4567 or https://localhost:4443, "admin", "admin"
 
 ##### Downstream margay
 * SSH: port 2223 @localhost, user: "onboard", password: "onboard"
-* Margay web: http://localhost:4568 or https://localhost:4444
+* Margay web: http://localhost:4568 or https://localhost:4444, "admin", "admin"
 
 See also `COMMON_MESSAGE` (and *`.vm.post_up_message`) in [Vagrantfile](Vagrantfile).
 
@@ -83,12 +83,3 @@ if, for example, you use polipo with default config
 
 Beware this may conflict with captive portal in the client, as browsers will then use the proxy
 and therefore circumvent the captive portal (depending on the configuration).
-
-### After installation
-
-Margay server will be available at
-
-* http://localhost:4567  (4568 for `mgy_downstr`)
-* https://localhost:4443 (4444 )
-
-The default credentials are `admin`:`admin`.
