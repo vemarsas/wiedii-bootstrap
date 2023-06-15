@@ -3,8 +3,9 @@
 ONBOARD_USER=onboard
 ONBOARD_GROUP=$ONBOARD_USER
 ONBOARD_SUBDIR=mgy-onboard
-ONBOARD_ROOT=/home/$ONBOARD_USER/$ONBOARD_SUBDIR
-ONBOARD_GIT="https://github.com/vemarsas/mgy-onboard.git"
+ONBOARD_USER_HOME=/home/$ONBOARD_USER
+ONBOARD_ROOT=$ONBOARD_USER_HOME/$ONBOARD_SUBDIR
+ONBOARD_GIT="https://github.com/vemarsas/wiedii-onboard.git"
 ONBOARD_BRANCH=main
 
 install_conffiles() {
@@ -20,7 +21,7 @@ setup_initial() {
   apt-get -y upgrade
   apt-get -y install sudo git-core openssh-server curl vim-nox mc
 
-  adduser --system --shell /bin/bash --group $ONBOARD_USER && \
+  adduser --system --shell /bin/bash --home $ONBOARD_USER_HOME --group $ONBOARD_USER && \
         echo "$ONBOARD_USER:$ONBOARD_USER" | chpasswd
 
   su - $ONBOARD_USER -c "

@@ -3,7 +3,7 @@
 
 require 'pp'
 
-DEBIAN_BOX = "debian/bullseye64"
+DEBIAN_BOX = "debian/bookworm64"
 COMMON_MESSAGE = "To setup Wiedii (if not done already):
   vagrant ssh <wiedii OR wiedii_downstr>
   sudo -i
