@@ -9,50 +9,50 @@ vagrant up
 The above is equivalent to:
 
 ```bash
-vagrant up mgy
+vagrant up wiedii
 ```
 
-You can start a "client" VM, connected "behind" Margay via virtualized internal network:
+You can start a "client" VM, connected "behind" Wiedii via virtualized internal network:
 ```bash
 vagrant up client
 ```
-`eth0` in the client is connected to `eth1` in Margay.
+`eth0` in the client is connected to `eth1` in Wiedii.
 
-You can also fire up a second Margay "downstream":
+You can also fire up a second Wiedii "downstream":
 ```bash
-vagrant up mgy_downstr
+vagrant up wiedii_downstr
 ```
-`eth1` in `mgy_downstr` is connected to `eth2` in `mgy`.
+`eth1` in `wiedii_downstr` is connected to `eth2` in `wiedii`.
 
 The client VM will show the VBox GUI, you will see a graphical login.
 Enter with credentials vagrant:vagrant, then right-click
 and open Web Browser (or Terminal etc.)
 
-The same argument `mgy`, `mgy_downstr`, or `client` holds for
+The same argument `wiedii`, `wiedii_downstr`, or `client` holds for
 other Vagrant commands: provision, halt, suspend, destroy etc.
 (see documentation on the Vagrant website).
 
-### Margay setup
+### Wiedii setup
 
-At this point Margay is not setup yet.
+At this point Wiedii is not setup yet.
 
-To setup Margay (if not done already):
+To setup Wiedii (if not done already):
 ```bash
-vagrant ssh <mgy OR mgy_downstr>
+vagrant ssh <wiedii OR wiedii_downstr>
 sudo -i
-bash -c "$(wget -O - https://raw.githubusercontent.com/vemarsas/mgy-onboard/main/setup.sh)"
+bash -c "$(wget -O - https://raw.githubusercontent.com/vemarsas/wiedii-bootstrap/main/bootstrap.sh)"
 ```
 That's the same installation procedure you would use on real hardware!
 
-#### After Margay setup
+#### After Wiedii setup
 
-##### Upstream Margay
+##### Upstream Wiedii
 * SSH: port 2222 @localhost, user: "onboard", password: "onboard"
-* Margay web: http://localhost:4567 or https://localhost:4443, "admin", "admin"
+* Wiedii web: http://localhost:4567 or https://localhost:4443, "admin", "admin"
 
-##### Downstream margay
+##### Downstream Wiedii
 * SSH: port 2223 @localhost, user: "onboard", password: "onboard"
-* Margay web: http://localhost:4568 or https://localhost:4444, "admin", "admin"
+* Wiedii web: http://localhost:4568 or https://localhost:4444, "admin", "admin"
 
 See also `COMMON_MESSAGE` (and *`.vm.post_up_message`) in [Vagrantfile](Vagrantfile).
 

@@ -4,10 +4,10 @@
 require 'pp'
 
 DEBIAN_BOX = "debian/bullseye64"
-COMMON_MESSAGE = "To setup Margay (if not done already):
-  vagrant ssh <mgy OR mgy_downstr>
+COMMON_MESSAGE = "To setup Wiedii (if not done already):
+  vagrant ssh <wiedii OR wiedii_downstr>
   sudo -i
-  bash -c \"$(wget -O - https://raw.githubusercontent.com/vemarsas/mgy-onboard/main/setup.sh)\"
+  bash -c \"$(wget -O - https://raw.githubusercontent.com/vemarsas/wiedii-bootstrap/main/bootstrap.sh)\"
 "
 ENABLE_PASSWD = <<-END
   sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config
@@ -15,7 +15,7 @@ ENABLE_PASSWD = <<-END
 END
 
 
-# Ex. allow_promisc mgy, [2, 3, 4], :allow_vms
+# Ex. allow_promisc wiedii, [2, 3, 4], :allow_vms
 # (NIC ID=1 is generally the default/NAT interface)
 # The third arg may also be :allow_all or :deny
 def allow_promisc(vmcfg, nicids, allow=:allow_vms)
@@ -34,7 +34,7 @@ end
                                                 |
                                               (eth0)
   --------                                    -----
- | CLIENT |---default(vlan1?)_access---(eth1)| MGY |(eth3)---vlan2_access
+ | CLIENT |---default(vlan1?)_access---(eth1)| WIEDII |(eth3)---vlan2_access
   --------                                    -----
                                               (eth2)
                                                 |
@@ -42,7 +42,7 @@ end
                                                 |
                                               (eth1)
                                             -------------
-                       default/NAT---(eth0)| MGY_DOWNSTR |
+                       default/NAT---(eth0)| WIEDII_DOWNSTR |
                                             -------------
                                             (eth2) (eth3)
                                               |       |
@@ -50,113 +50,113 @@ end
 
   Of course, VLAN IDs 1, 2 are purely conventional/examples: they are not enforced in this Vagrantfile.
 
-  A simpler topology with no VLANs will be just MGY and CLIENT (e.g. to test Raidus/Chilli and no 802.1Q involved).
+  A simpler topology with no VLANs will be just WIEDII and CLIENT (e.g. to test Raidus/Chilli and no 802.1Q involved).
   That was indeed the original design.
 =end
 
 
 Vagrant.configure("2") do |config|
-  config.vm.define "mgy", primary: true do |mgy|
+  config.vm.define "wiedii", primary: true do |wiedii|
 
-    mgy.vm.box = DEBIAN_BOX
+    wiedii.vm.box = DEBIAN_BOX
 
-    mgy.vm.hostname = "mgy"
+    wiedii.vm.hostname = "wiedii"
 
-    mgy.vm.synced_folder ".", "/vagrant", disabled: true
+    wiedii.vm.synced_folder ".", "/vagrant", disabled: true
 
-    mgy.vm.network "forwarded_port", guest: 22,   host: 2222
-    mgy.vm.network "forwarded_port", guest: 4567, host: 4567
-    mgy.vm.network "forwarded_port", guest: 443,  host: 4443
+    wiedii.vm.network "forwarded_port", guest: 22,   host: 2222
+    wiedii.vm.network "forwarded_port", guest: 4567, host: 4567
+    wiedii.vm.network "forwarded_port", guest: 443,  host: 4443
 
     # NIC #1 is the default NAT interface, with forwarded ports above
 
     # NIC #2
-    mgy.vm.network "private_network",  # may also be used as vlan 1 access
-      auto_config: false, # or will reset what margay-persist has configured on the interface
+    wiedii.vm.network "private_network",  # may also be used as vlan 1 access
+      auto_config: false, # or will reset what wiedii-persist has configured on the interface
       virtualbox__intnet: "default_access"
 
     # NIC #3
-    mgy.vm.network "private_network",
-      auto_config: false, # or will reset what margay-persist has configured on the interface
+    wiedii.vm.network "private_network",
+      auto_config: false, # or will reset what wiedii-persist has configured on the interface
       virtualbox__intnet: "vlan_trunk"
 
     # NIC #4
-    mgy.vm.network "private_network",
-      auto_config: false, # or will reset what margay-persist has configured on the interface
+    wiedii.vm.network "private_network",
+      auto_config: false, # or will reset what wiedii-persist has configured on the interface
       virtualbox__intnet: "vlan2_access"
 
     # If we ever want bridges to work...
-    allow_promisc mgy, [2, 3, 4], :allow_vms
+    allow_promisc wiedii, [2, 3, 4], :allow_vms
 
-    mgy.vm.provision "shell", inline: ENABLE_PASSWD
+    wiedii.vm.provision "shell", inline: ENABLE_PASSWD
 
-    mgy.vm.post_up_message = [
+    wiedii.vm.post_up_message = [
       COMMON_MESSAGE,
-      'After Margay setup:',
+      'After Wiedii setup:',
       'SSH: port 2222 @localhost, user: "onboard", password: "onboard"',
-      'Margay web: http://localhost:4567 or https://localhost:4443'
+      'Wiedii web: http://localhost:4567 or https://localhost:4443'
     ].join("\n")
   end
 
-  config.vm.define "mgy_downstr", autostart: false do |mgy_downstr|  # downstream switch, currently a mgy, could be an Arista, Cisco, etc.
+  config.vm.define "wiedii_downstr", autostart: false do |wiedii_downstr|  # downstream switch, currently a wiedii, could be an Arista, Cisco, etc.
 
-    mgy_downstr.vm.box = DEBIAN_BOX
+    wiedii_downstr.vm.box = DEBIAN_BOX
 
-    mgy_downstr.vm.hostname = "mgy-downstr"
+    wiedii_downstr.vm.hostname = "wiedii-downstr"
 
-    mgy_downstr.vm.synced_folder ".", "/vagrant", disabled: true
+    wiedii_downstr.vm.synced_folder ".", "/vagrant", disabled: true
 
-    mgy_downstr.vm.network "forwarded_port",  guest: 22,   host: 2223
-    mgy_downstr.vm.network "forwarded_port",  guest: 4567, host: 4568
-    mgy_downstr.vm.network "forwarded_port",  guest: 443,  host: 4444
+    wiedii_downstr.vm.network "forwarded_port",  guest: 22,   host: 2223
+    wiedii_downstr.vm.network "forwarded_port",  guest: 4567, host: 4568
+    wiedii_downstr.vm.network "forwarded_port",  guest: 443,  host: 4444
 
     # NIC #1 is the default NAT interface, with forwarded ports above
 
     # NIC #2
-    mgy_downstr.vm.network "private_network",
-      auto_config: false, # or will reset what margay-persist has configured on the interface
+    wiedii_downstr.vm.network "private_network",
+      auto_config: false, # or will reset what wiedii-persist has configured on the interface
       virtualbox__intnet: "vlan_trunk"
 
     # NIC #3
-    mgy_downstr.vm.network "private_network",
-      auto_config: false, # or will reset what margay-persist has configured on the interface
+    wiedii_downstr.vm.network "private_network",
+      auto_config: false, # or will reset what wiedii-persist has configured on the interface
       virtualbox__intnet: "downstr_vlan_1_access"
 
     # NIC #4
-    mgy_downstr.vm.network "private_network",
-      auto_config: false, # or will reset what margay-persist has configured on the interface
+    wiedii_downstr.vm.network "private_network",
+      auto_config: false, # or will reset what wiedii-persist has configured on the interface
       virtualbox__intnet: "downstr_vlan_2_access"
 
-    allow_promisc mgy_downstr, [2, 3, 4], :allow_vms
+    allow_promisc wiedii_downstr, [2, 3, 4], :allow_vms
 
-    mgy_downstr.vm.provision "shell", inline: ENABLE_PASSWD
+    wiedii_downstr.vm.provision "shell", inline: ENABLE_PASSWD
 
-    mgy_downstr.vm.post_up_message = [
+    wiedii_downstr.vm.post_up_message = [
       COMMON_MESSAGE,
-      'After Margay setup:',
+      'After Wiedii setup:',
       'SSH: port 2223 @localhost, user: "onboard", password: "onboard"',
-      'Margay web: http://localhost:4568 or https://localhost:4444'
+      'Wiedii web: http://localhost:4568 or https://localhost:4444'
     ].join("\n")
   end
 
   # The client machine may be any OS, but for economy of storage and download time,
   # it's based on the same base box.
-  config.vm.define "client", autostart: false do |mgyc|
-    mgyc.vm.box = DEBIAN_BOX
-    mgyc.vm.hostname = "mgyclient"
-    mgyc.vm.network "private_network",
+  config.vm.define "client", autostart: false do |wiediic|
+    wiediic.vm.box = DEBIAN_BOX
+    wiediic.vm.hostname = "wiediiclient"
+    wiediic.vm.network "private_network",
       auto_config: false,
           # Vagrant auto_config would otherwise mess things up here,
           # modifying /etc/network/interfaces so to remove the default gw from
-          # margay (ordinary DHCP or chillispot).
+          # wiedii (ordinary DHCP or chillispot).
       virtualbox__intnet: "default_access"
-    mgyc.vm.provider "virtualbox" do |vb|
+    wiediic.vm.provider "virtualbox" do |vb|
       vb.gui = true
       # https://stackoverflow.com/a/24253435
       vb.customize ["modifyvm", :id, "--vram", "16"]
     end
-    mgyc.vm.provision "shell", inline: <<-EOF
-      # restore default VBox NAT interface networking (if it has been disabled previously to use margay-connected interface eth1)
+    wiediic.vm.provision "shell", inline: <<-EOF
+      # restore default VBox NAT interface networking (if it has been disabled previously to use wiedii-connected interface eth1)
       ip link set up dev eth0
       # ASSUME dhclient is the dhcp client
       if (ps aux | grep dhclient | grep eth0 | grep -v grep); then
@@ -176,10 +176,10 @@ Vagrant.configure("2") do |config|
       systemctl start lightdm
 
       # Remove default Internet connection, it will use the second interface behind
-      # margay (now that provisioning is done and software downloaded).
+      # wiedii (now that provisioning is done and software downloaded).
 
       cat > /etc/network/interfaces <<EOFF
-# Auto-generated by a custom Vagrant provisioner for margay client.
+# Auto-generated by a custom Vagrant provisioner for wiedii client.
 
 # source /etc/network/interfaces.d/*
 
@@ -193,7 +193,7 @@ iface eth0 inet dhcp
 pre-up sleep 2
 post-up ip route del default dev \\$IFACE || true
 
-# Interface connected to Margay
+# Interface connected to Wiedii
 auto eth1
 iface eth1 inet dhcp
 EOFF
