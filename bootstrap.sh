@@ -2,7 +2,7 @@
 
 ONBOARD_USER=onboard
 ONBOARD_GROUP=$ONBOARD_USER
-ONBOARD_SUBDIR=mgy-onboard
+ONBOARD_SUBDIR=wiedii-onboard
 ONBOARD_USER_HOME=/home/$ONBOARD_USER
 ONBOARD_ROOT=$ONBOARD_USER_HOME/$ONBOARD_SUBDIR
 ONBOARD_GIT="https://github.com/vemarsas/wiedii-onboard.git"

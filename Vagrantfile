@@ -8,6 +8,9 @@ COMMON_MESSAGE = "To setup Wiedii (if not done already):
   vagrant ssh <wiedii OR wiedii_downstr>
   sudo -i
   bash -c \"$(wget -O - https://raw.githubusercontent.com/vemarsas/wiedii-bootstrap/main/bootstrap.sh)\"
+  # OR directly run
+  /vagrant/bootstrap.sh
+  # which you can edit locally (and commit/push from the host).
 "
 ENABLE_PASSWD = <<-END
   sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config
@@ -62,7 +65,7 @@ Vagrant.configure("2") do |config|
 
     wiedii.vm.hostname = "wiedii"
 
-    wiedii.vm.synced_folder ".", "/vagrant", disabled: true
+    # wiedii.vm.synced_folder ".", "/vagrant", disabled: true
 
     wiedii.vm.network "forwarded_port", guest: 22,   host: 2222
     wiedii.vm.network "forwarded_port", guest: 4567, host: 4567
@@ -104,7 +107,7 @@ Vagrant.configure("2") do |config|
 
     wiedii_downstr.vm.hostname = "wiedii-downstr"
 
-    wiedii_downstr.vm.synced_folder ".", "/vagrant", disabled: true
+    # wiedii_downstr.vm.synced_folder ".", "/vagrant", disabled: true
 
     wiedii_downstr.vm.network "forwarded_port",  guest: 22,   host: 2223
     wiedii_downstr.vm.network "forwarded_port",  guest: 4567, host: 4568

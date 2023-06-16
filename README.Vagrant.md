@@ -44,6 +44,10 @@ bash -c "$(wget -O - https://raw.githubusercontent.com/vemarsas/wiedii-bootstrap
 ```
 That's the same installation procedure you would use on real hardware!
 
+#### If you are developing bootstrap.sh itself and want to test it
+
+You can find (and run) it as `/vagrant/bootstrap.sh` from within the guest.
+
 #### After Wiedii setup
 
 ##### Upstream Wiedii
@@ -56,11 +60,6 @@ That's the same installation procedure you would use on real hardware!
 
 See also `COMMON_MESSAGE` (and *`.vm.post_up_message`) in [Vagrantfile](Vagrantfile).
 
-
-### Synced folder
-
-We do not use it. Use sshfs or a plugin in your editor/IDE to connect to the machine `/home/onboard`
-and edit / git push etc. from the host.
 
 ### Very optional Vagrant tweaks
 
