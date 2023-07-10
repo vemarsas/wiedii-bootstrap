@@ -1,3 +1,5 @@
+Clone this repo. Cd into it.
+
 Install Vagrant -- https://www.vagrantup.com/.
 
 Then run
