@@ -16,6 +16,7 @@ ENABLE_PASSWD = <<-END
   sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config
   systemctl restart sshd.service
 END
+WIEDII_RAM_MB = 1024
 
 
 # Ex. allow_promisc wiedii, [2, 3, 4], :allow_vms
@@ -26,6 +27,15 @@ def allow_promisc(vmcfg, nicids, allow=:allow_vms)
     nicids.each do |i|
       vb.customize ["modifyvm", :id, "--nicpromisc#{i}", allow.to_s.gsub('_', '-')]
     end
+  end
+end
+
+
+# Some gems with C/C++ extensions crash at compile time if the system has just
+# the default amount of 512 MB. RAM >= 1GB is recommended.
+def assign_ram(vmcfg, megabytes)
+  vmcfg.vm.provider "virtualbox" do |vb|
+    vb.memory = megabytes
   end
 end
 
@@ -62,6 +72,8 @@ Vagrant.configure("2") do |config|
   config.vm.define "wiedii", primary: true do |wiedii|
 
     wiedii.vm.box = DEBIAN_BOX
+
+    assign_ram wiedii, WIEDII_RAM_MB
 
     wiedii.vm.hostname = "wiedii"
 
@@ -104,6 +116,8 @@ Vagrant.configure("2") do |config|
   config.vm.define "wiedii_downstr", autostart: false do |wiedii_downstr|  # downstream switch, currently a wiedii, could be an Arista, Cisco, etc.
 
     wiedii_downstr.vm.box = DEBIAN_BOX
+
+    assign_ram wiedii_downstr, WIEDII_RAM_MB
 
     wiedii_downstr.vm.hostname = "wiedii-downstr"
 
