@@ -25,10 +25,10 @@ setup_initial() {
         echo "$ONBOARD_USER:$ONBOARD_USER" | chpasswd
 
   su - $ONBOARD_USER -c "
-  if [ -d onboard ]; then
+  if [ -d $ONBOARD_SUBDIR ]; then
     cd $ONBOARD_SUBDIR
     git remote set-url origin $ONBOARD_GIT
-    git pull --ff-only origin margay || true
+    git pull --ff-only origin $ONBOARD_BRANCH || true
   else
     git clone -b $ONBOARD_BRANCH $ONBOARD_GIT
     # HTTPS passwords have been disabled by GitHub, allow at least to store tokens...
