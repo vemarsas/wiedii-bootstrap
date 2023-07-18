@@ -15,8 +15,6 @@ install_conffiles() {
 }
 
 setup_initial() {
-  echo " Installing core functionality..."
-
   apt-get update
   apt-get -y upgrade
   apt-get -y install sudo git-core openssh-server curl vim-nox mc
