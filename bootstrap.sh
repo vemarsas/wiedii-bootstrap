@@ -86,24 +86,10 @@ setup_core() {
   bash etc/scripts/platform/debian/setup.sh $ONBOARD_ROOT $ONBOARD_USER
 }
 
-setup_ovpn() {
-  echo " Installing OpenVPN functionality..."
-  cd $ONBOARD_ROOT
-  bash modules/openvpn/etc/scripts/platform/debian/setup.sh $ONBOARD_ROOT $ONBOARD_USER
-}
-
-setup_ap() {
-  echo " Installing Wireless Access Point functionality..."
-  cd $ONBOARD_ROOT
-  bash modules/ap/etc/scripts/platform/debian/setup.sh $ONBOARD_ROOT $ONBOARD_USER
-}
-
 run() {
   setup_initial | tee -a /var/log/mgyinstall.log
   setup_core    | tee -a /var/log/mgyinstall.log
-  setup_ovpn    | tee -a /var/log/mgyinstall.log
-  setup_ap      | tee -a /var/log/mgyinstall.log
-}
+ }
 
 
 run
