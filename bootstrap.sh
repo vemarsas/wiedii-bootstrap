@@ -88,8 +88,8 @@ setup_core() {
 
 run() {
   setup_initial | tee -a /var/log/mgyinstall.log
-  setup_core    | tee -a /var/log/mgyinstall.log
- }
+  # setup_core    | tee -a /var/log/mgyinstall.log # temp. disabled, will be run manually after changing branch there
+}
 
 
 run
