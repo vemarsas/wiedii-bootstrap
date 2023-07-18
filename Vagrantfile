@@ -9,7 +9,7 @@ COMMON_MESSAGE = "To setup Wiedii (if not done already):
   sudo -i
   bash -c \"$(wget -O - https://raw.githubusercontent.com/vemarsas/wiedii-bootstrap/main/bootstrap.sh)\"
   # OR directly run
-  /vagrant/bootstrap.sh
+  bash /vagrant/bootstrap.sh
   # which you can edit locally (and commit/push from the host).
 "
 ENABLE_PASSWD = <<-END
