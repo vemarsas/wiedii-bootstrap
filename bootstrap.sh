@@ -7,7 +7,7 @@ APP_SUBDIR=$APP_NAME
 APP_USER_HOME=/home/$APP_USER
 APP_ROOT=$APP_USER_HOME/$APP_SUBDIR
 APP_GIT="https://github.com/vemarsas/wiedii.git"
-APP_BRANCH=main
+APP_BRANCH=${1:-'main'}
 
 export DEBIAN_FRONTEND=noninteractive
 
