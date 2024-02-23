@@ -9,6 +9,8 @@ APP_ROOT=$APP_USER_HOME/$APP_SUBDIR
 APP_GIT="https://github.com/vemarsas/wiedii.git"
 APP_BRANCH=main
 
+export DEBIAN_FRONTEND=noninteractive
+
 install_conffiles() {
 	cd $APP_ROOT
 	cd doc/sysadm/examples
