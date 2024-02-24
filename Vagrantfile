@@ -108,7 +108,7 @@ Vagrant.configure("2") do |config|
     wiedii.vm.post_up_message = [
       COMMON_MESSAGE,
       'After Wiedii setup:',
-      'SSH: port 2222 @localhost, user: "onboard", password: "onboard"',
+      'SSH: port 2222 @localhost, user: "wiedii", password: "wiedii"',
       'Wiedii web: http://localhost:4567 or https://localhost:4443'
     ].join("\n")
   end
@@ -151,7 +151,7 @@ Vagrant.configure("2") do |config|
     wiedii_downstr.vm.post_up_message = [
       COMMON_MESSAGE,
       'After Wiedii setup:',
-      'SSH: port 2223 @localhost, user: "onboard", password: "onboard"',
+      'SSH: port 2223 @localhost, user: "wiedii", password: "wiedii"',
       'Wiedii web: http://localhost:4568 or https://localhost:4444'
     ].join("\n")
   end
